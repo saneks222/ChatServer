@@ -1,5 +1,8 @@
-﻿using Chat.DTO;
+﻿using Chat.Data;
+using Chat.DTO;
 using Chat.Entity;
+using ChatServer.Data.Abstract;
+using ChatServer.Data.Concrete;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -16,12 +19,20 @@ namespace Chat.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly IEfUser _efUser;
 
-        public AuthController(UserManager<User> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration)
+        public AuthController(UserManager<User> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration, IEfUser efUser)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _efUser = efUser;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUser() 
+        {
+            return Ok(_efUser.Get(x=>x.Id== "75801cf7-7b34-4e0a-ad1a-75d4959dd2c2"));
         }
 
         [HttpPost]

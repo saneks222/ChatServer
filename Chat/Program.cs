@@ -1,14 +1,20 @@
 using Chat.Data;
 using Chat.Entity;
+using ChatServer;
+using ChatServer.Data.Abstract;
+using ChatServer.Data.Concrete;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigurationManager configuration = builder.Configuration;
+
+ApplicationDbContext.setConfiguration(configuration);
 
 // Add services to the container.
 
@@ -37,6 +43,8 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
         };
     });
+
+builder.Services.TryAddTransient<IEfUser,EfUser>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

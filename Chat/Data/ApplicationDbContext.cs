@@ -6,7 +6,7 @@ using ChatServer;
 
 namespace Chat.Data
 {
-    public class ApplicationDbContext: IdentityDbContext<User>
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         private static IConfiguration configuration;
         public ApplicationDbContext()
@@ -14,16 +14,19 @@ namespace Chat.Data
 
         }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-            {
-            }
-            protected override void OnModelCreating(ModelBuilder builder)
-            {
-                base.OnModelCreating(builder);
-            }
-
-        public static void setConfiguration(IConfiguration conf) 
         {
-            configuration=conf;
+        }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<UserInChat>().Navigation(x => x.Chat).AutoInclude();
+            builder.Entity<Messages>().Navigation(x => x.Chat).AutoInclude();
+            builder.Entity<Messages>().Navigation(x => x.User).AutoInclude();
+        }
+
+        public static void setConfiguration(IConfiguration conf)
+        {
+            configuration = conf;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

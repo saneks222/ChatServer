@@ -3,6 +3,7 @@ using Chat.DTO;
 using Chat.Entity;
 using ChatServer.Data.Abstract;
 using ChatServer.Data.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -30,9 +31,11 @@ namespace Chat.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetUser() 
         {
-            return Ok(_efUser.Get(x=>x.Id== "75801cf7-7b34-4e0a-ad1a-75d4959dd2c2"));
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            return Ok();
         }
 
         [HttpPost]

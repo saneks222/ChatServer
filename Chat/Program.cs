@@ -45,6 +45,9 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.TryAddTransient<IEfUser,EfUser>();
+builder.Services.TryAddTransient<IEfChats, EfChats>();
+builder.Services.TryAddTransient<IEfMessages, EfMessages>();
+builder.Services.TryAddTransient<IEfUserInChat, EfUserInChat>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

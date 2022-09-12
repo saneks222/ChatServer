@@ -30,14 +30,6 @@ namespace Chat.Controllers
             _efUser = efUser;
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> GetUser() 
-        {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            return Ok();
-        }
-
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel loginModel) 
